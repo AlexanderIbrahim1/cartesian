@@ -14,6 +14,9 @@ class CartesianND(ABC):
     """Defines the interface for concrete Cartesian classes."""
     _coords: array
     
+    def __eq__(self, other: Type[T]) -> bool:
+        return self._coords == other._coords
+    
     def __getitem__(self, i_dim: int) -> float:
         """Return the value of the `dim`th dimension of this point."""
         return self._coords[i_dim]
