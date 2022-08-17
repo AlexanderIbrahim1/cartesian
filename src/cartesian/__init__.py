@@ -1,3 +1,3 @@
-from .point import Cartesian1D
-from .point import Cartesian2D
-from .point import Cartesian3D
+from .point import Cartesian1D  # noqa
+from .point import Cartesian2D  # noqa
+from .point import Cartesian3D  # noqa
