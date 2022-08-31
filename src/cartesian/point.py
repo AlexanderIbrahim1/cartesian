@@ -51,6 +51,14 @@ class CartesianND(ABC):
     def __rmul__(self, other: float) -> Any:
         """Element-wise multiplication of the point in cartesian space by a number."""
 
+    @abstractmethod
+    def __floordiv__(self, other: float) -> Any:
+        """Element-wise floor division of the point in cartesian space by a number."""
+
+    @abstractmethod
+    def __truediv__(self, other: float) -> Any:
+        """Element-wise floor division of the point in cartesian space by a number."""
+
     def coordinates(self) -> array[float]:
         """Direct access to coordinates, mainly for iteration."""
         return self._coords
@@ -81,13 +89,23 @@ class Cartesian1D(CartesianND):
             return NotImplemented
         return Cartesian1D(self._coords[0] - other._coords[0])
 
-    def __mul__(self, other: Any) -> Cartesian1D:
-        if not isinstance(other, float):
-            return NotImplemented
+    def __mul__(self, other: float) -> Cartesian1D:
         return Cartesian1D(other * self._coords[0])
 
-    def __rmul__(self, other: Any) -> Cartesian1D:
+    def __rmul__(self, other: float) -> Cartesian1D:
         return self.__mul__(other)
+
+    def __floordiv__(self, other: float) -> Cartesian1D:
+        if other == 0.0:
+            raise ZeroDivisionError("cannot divide Cartesian1D coordinates by 0")
+        else:
+            return Cartesian1D(self._coords[0] // other)
+
+    def __truediv__(self, other: float) -> Cartesian1D:
+        if other == 0.0:
+            raise ZeroDivisionError("cannot divide Cartesian1D coordinates by 0")
+        else:
+            return Cartesian1D(self._coords[0] / other)
 
     @classmethod
     def origin(cls: Type[Cartesian1D]) -> Cartesian1D:
@@ -116,13 +134,29 @@ class Cartesian2D(CartesianND):
             self._coords[1] - other._coords[1],  # noqa; want to both on separate lines
         )
 
-    def __mul__(self, other: Any) -> Cartesian2D:
-        if not isinstance(other, float):
-            return NotImplemented
+    def __mul__(self, other: float) -> Cartesian2D:
         return Cartesian2D(other * self._coords[0], other * self._coords[1])
 
-    def __rmul__(self, other: Any) -> Cartesian2D:
+    def __rmul__(self, other: float) -> Cartesian2D:
         return self.__mul__(other)
+
+    def __floordiv__(self, other: float) -> Cartesian2D:
+        if other == 0:
+            raise ZeroDivisionError("cannot divide Cartesian2D coordinates by 0")
+        else:
+            return Cartesian2D(
+                self._coords[0] // other,
+                self._coords[1] // other,  # noqa; want both on separate lines
+            )
+
+    def __truediv__(self, other: float) -> Cartesian2D:
+        if other == 0:
+            raise ZeroDivisionError("cannot divide Cartesian2D coordinates by 0")
+        else:
+            return Cartesian2D(
+                self._coords[0] / other,
+                self._coords[1] / other,  # noqa; want both on separate lines
+            )
 
     @classmethod
     def origin(cls: Type[Cartesian2D]) -> Cartesian2D:
@@ -153,17 +187,35 @@ class Cartesian3D(CartesianND):
             self._coords[2] - other._coords[2],
         )
 
-    def __mul__(self, other: Any) -> Cartesian3D:
-        if not isinstance(other, float):
-            return NotImplemented
+    def __mul__(self, other: float) -> Cartesian3D:
         return Cartesian3D(
             other * self._coords[0],
             other * self._coords[1],
             other * self._coords[2],
         )
 
-    def __rmul__(self, other: Any) -> Cartesian3D:
+    def __rmul__(self, other: float) -> Cartesian3D:
         return self.__mul__(other)
+
+    def __floordiv__(self, other: float) -> Cartesian3D:
+        if other == 0:
+            raise ZeroDivisionError("cannot divide Cartesian3D coordinates by 0")
+        else:
+            return Cartesian3D(
+                self._coords[0] // other,
+                self._coords[1] // other,
+                self._coords[2] // other,
+            )
+
+    def __truediv__(self, other: float) -> Cartesian3D:
+        if other == 0:
+            raise ZeroDivisionError("cannot divide Cartesian3D coordinates by 0")
+        else:
+            return Cartesian3D(
+                self._coords[0] / other,
+                self._coords[1] / other,
+                self._coords[2] / other,
+            )
 
     @classmethod
     def origin(cls: Type[Cartesian3D]) -> Cartesian3D:
