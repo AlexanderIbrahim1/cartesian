@@ -60,18 +60,6 @@ def test_euclidean_distance_squared():
 def test_euclidean_norm(point, norm):
     assert measure.euclidean_norm(point) == pytest.approx(norm)
 
-@pytest.mark.parametrize(
-    "norm_func",
-    [
-        measure.euclidean_norm,
-        measure.euclidean_norm_squared,
-    ],
-)
-def test_euclidean_norm_notimpl(norm_func):
-    not_a_point = 2.0    # anything that isn't a CartesianND instance
-
-    assert norm_func(not_a_point) == NotImplemented
-
 
 def test_euclidean_norm_squared():
     point = Cartesian2D(3.0, 4.0)
