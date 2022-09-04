@@ -73,3 +73,33 @@ def test_euclidean_norm_squared():
         == pytest.approx(norm_euclid**2)
         == pytest.approx(norm_numeric**2)
     )
+
+
+@pytest.mark.parametrize(
+    "pair_sep, actual_true_pair_sep",
+    [
+        (0.2, 0.2),
+        (0.6, -0.4),
+        (1.0, 0.0),
+        (1.2, 0.2),
+        (1.6, -0.4),
+        (2.0, 0.0),
+        (2.2, 0.2),
+        (0.0, 0.0),
+        (-0.2, -0.2),
+        (-0.7, 0.3),
+        (-1.0, 0.0),
+        (-1.3, -0.3),
+        (-1.6, 0.4),
+        (-2.0, 0.0),
+        (-2.2, -0.2),
+    ],
+)
+def test__periodic_modulus_pairdist_sidelength1(pair_sep, actual_true_pair_sep):
+    sidelength = 1.0
+
+    expected_true_pair_sep = measure._periodic_modulus_pairdist(pair_sep, sidelength)
+    assert (
+        expected_true_pair_sep == pytest.approx(actual_true_pair_sep)
+        and abs(expected_true_pair_sep) < 0.5 * sidelength
+    )

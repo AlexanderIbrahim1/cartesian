@@ -48,15 +48,28 @@ def euclidean_norm(point: CartesianND) -> float:
     return math.sqrt(euclidean_norm_squared(point))
 
 
-def _periodic_modulus_pairdist(pairdist: float, half_sidelength: float) -> float:
+def _periodic_modulus_pairdist(pair_separation: float, sidelength: float) -> float:
     """
     Calculate the true distance along a coordinate between two points in a periodic box.
-    This function assumes that:
-        'pairdist' is nonnegative
-        'half_sidelength' is positive
+        'pair_separation' is the signed, non-period-corrected separation length
+        'sidelength' is the positive along which to judge the true distance
+    
+    The output will be between
+        '-0.5 * sidelength' and '0.5 * sidelength'
     """
-    n_subtract = pairdist // half_sidelength
-    return pairdist - n_subtract * half_sidelengths
+    abs_pair_separation = abs(pair_separation)
+    
+    if 2.0 * abs_pair_separation > sidelength:
+        sign = math.copysign(1, pair_separation)
+        n_shifts = math.ceil(
+            (abs_pair_separation / sidelength) - 0.5
+        )
+        
+        total_position_shift = sign * n_shifts * sidelength
+        true_pair_separation = pair_separation - total_position_shift
+        return true_pair_separation
+    else:
+        return pair_separation
 
 
 #def periodic_euclidean_distance_squared(point0: CartesianND, point1: CartesianND, box: PeriodicBoxSidesND) -> float:
