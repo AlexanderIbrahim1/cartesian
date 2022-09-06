@@ -6,6 +6,9 @@ from cartesian import Cartesian1D
 from cartesian import Cartesian2D
 from cartesian import Cartesian3D
 from cartesian import measure
+from cartesian import PeriodicBoxSides1D
+from cartesian import PeriodicBoxSides2D
+from cartesian import PeriodicBoxSides3D
 
 
 @pytest.mark.parametrize(
@@ -103,3 +106,91 @@ def test__periodic_modulus_pairdist_sidelength1(pair_sep, actual_true_pair_sep):
         expected_true_pair_sep == pytest.approx(actual_true_pair_sep)
         and abs(expected_true_pair_sep) < 0.5 * sidelength
     )
+
+
+def test_periodic_euclidean_distance():
+    box = PeriodicBoxSides1D(1.0)
+    point0 = Cartesian1D(0.2)
+    point1 = Cartesian1D(0.8)
+
+    expect_distance = 0.4
+    expect_distance_sq = expect_distance**2
+
+    actual_distance = measure.periodic_euclidean_distance(point0, point1, box)
+    actual_distance_sq = measure.periodic_euclidean_distance_squared(
+        point0, point1, box
+    )
+
+    # fmt: off
+    assert (
+        actual_distance == pytest.approx(expect_distance) and
+        actual_distance_sq == pytest.approx(expect_distance_sq)
+    )
+    # fmt: on
+
+
+def test_periodic_euclidean_distance_wrong_type():
+    box = PeriodicBoxSides1D(1.0)
+    point_1d = Cartesian1D(0.2)
+    point_2d = Cartesian2D(0.2, 0.4)
+
+    actual_distance = measure.periodic_euclidean_distance(point_1d, point_2d, box)
+    actual_distance_sq = measure.periodic_euclidean_distance_squared(
+        point_1d, point_2d, box
+    )
+
+    # fmt: off
+    assert (
+        actual_distance is NotImplemented and
+        actual_distance_sq is NotImplemented
+    )
+    # fmt: on
+
+
+def test_periodic_euclidean_distance_wrong_boxdimension():
+    box = PeriodicBoxSides2D(1.0, 1.0)
+    point0 = Cartesian1D(0.2)
+    point1 = Cartesian1D(0.4)
+
+    with pytest.raises(RuntimeError) as exc_info:
+        measure.periodic_euclidean_distance(point0, point1, box)
+
+    assert (
+        str(exc_info.value)
+        == "The points and the box must have the same number of dimensions."
+    )
+
+
+@pytest.mark.parametrize(
+    "point, expect_norm",
+    [
+        (Cartesian1D(0.2), 0.2),
+        (Cartesian1D(0.5), 0.5),
+        (Cartesian1D(0.7), 0.3),
+    ],
+)
+def test_periodic_euclidean_norm(point, expect_norm):
+    box = PeriodicBoxSides1D(1.0)
+
+    expect_norm_sq = expect_norm**2
+
+    actual_norm = measure.periodic_euclidean_norm(point, box)
+    actual_norm_sq = measure.periodic_euclidean_norm_squared(point, box)
+
+    # fmt: off
+    assert (
+        actual_norm == pytest.approx(expect_norm) and
+        actual_norm_sq == pytest.approx(expect_norm_sq)
+    )
+    # fmt: on
+
+
+def test_periodic_euclidean_norm_wrong_boxdimension():
+    box = PeriodicBoxSides3D(1.0, 1.0)
+    point = Cartesian1D(0.2)
+
+    with pytest.raises(RuntimeError):
+        measure.periodic_euclidean_norm(point, box)
+
+    with pytest.raises(RuntimeError):
+        measure.periodic_euclidean_norm_squared(point, box)

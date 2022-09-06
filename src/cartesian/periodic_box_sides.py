@@ -3,8 +3,6 @@ from __future__ import annotations
 from abc import abstractmethod, ABC
 from array import array
 
-from typing import Any
-
 
 class PeriodicBoxSidesND(ABC):
     """Describe the side lengths of a box in N-dimensional cartesian space."""
@@ -18,7 +16,7 @@ class PeriodicBoxSidesND(ABC):
         if any([coord <= 0.0 for coord in self._coords]):
             err_msg = (
                 "All side lengths in the periodic box must be positive.\n"
-                f'Found: {self.__repr__()}'
+                f"Found: {self.__repr__()}"
             )
             raise ValueError(err_msg)
 
@@ -43,17 +41,20 @@ class PeriodicBoxSidesND(ABC):
 
 class PeriodicBoxSides1D(PeriodicBoxSidesND):
     """Represents the sides of a periodic box in 1D cartesian space."""
+
     def __init__(self, xlen: float) -> None:
         super().__init__(array("d", [xlen]))
 
 
 class PeriodicBoxSides2D(PeriodicBoxSidesND):
     """Represents the sides of a periodic box in 2D cartesian space."""
+
     def __init__(self, xlen: float, ylen: float) -> None:
         super().__init__(array("d", [xlen, ylen]))
 
 
 class PeriodicBoxSides3D(PeriodicBoxSidesND):
     """Represents the sides of a periodic box in 3D cartesian space."""
+
     def __init__(self, xlen: float, ylen: float, zlen: float) -> None:
         super().__init__(array("d", [xlen, ylen, zlen]))

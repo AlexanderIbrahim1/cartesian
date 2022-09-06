@@ -41,6 +41,19 @@ def test_periodic_box_eq(box1, box2):
     assert box1 == box2
 
 
+@pytest.mark.parametrize(
+    "box1, box2",
+    [
+        (PeriodicBoxSides1D(2.0), PeriodicBoxSides1D(2.2)),
+        (PeriodicBoxSides2D(1.0, 3.0), PeriodicBoxSides2D(1.1, 3.0)),
+        (PeriodicBoxSides3D(4.1, 5.2, 6.3), PeriodicBoxSides3D(4.1, 5.201, 6.301)),
+        (PeriodicBoxSides3D(1.0, 2.0, 3.0), "This is not a box"),
+    ],
+)
+def test_periodic_box_not_eq(box1, box2):
+    assert box1 != box2
+
+
 def test_periodic_box_repr():
     box = PeriodicBoxSides2D(1.5, 3.3)
     assert repr(box) == "PeriodicBoxSides(1.500000, 3.300000)"
@@ -60,4 +73,4 @@ def test_periodic_box_coordinates():
 @pytest.mark.parametrize("sidelengths", [(1.0, -1.0), (0.0, 1.0), (3.0, 0.0)])
 def test_periodic_box_invalid(sidelengths):
     with pytest.raises(ValueError):
-        box = PeriodicBoxSides2D(*sidelengths)
+        PeriodicBoxSides2D(*sidelengths)
