@@ -21,6 +21,10 @@ class CartesianND(ABC):
 
     _coords: array[float]
 
+    def coordinates(self) -> array[float]:
+        """Direct access to coordinates, mainly for iteration."""
+        return self._coords
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, CartesianND):
             return NotImplemented
@@ -58,10 +62,6 @@ class CartesianND(ABC):
     @abstractmethod
     def __truediv__(self, other: float) -> Any:
         """Element-wise floor division of the point in cartesian space by a number."""
-
-    def coordinates(self) -> array[float]:
-        """Direct access to coordinates, mainly for iteration."""
-        return self._coords
 
     @classmethod
     @abstractmethod
