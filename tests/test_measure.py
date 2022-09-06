@@ -108,12 +108,14 @@ def test__periodic_modulus_pairdist_sidelength1(pair_sep, actual_true_pair_sep):
     )
 
 
-def test_periodic_euclidean_distance():
-    box = PeriodicBoxSides1D(1.0)
-    point0 = Cartesian1D(0.2)
-    point1 = Cartesian1D(0.8)
-
-    expect_distance = 0.4
+@pytest.mark.parametrize(
+    "point0, point1, box, expect_distance",
+    [
+        (Cartesian1D(0.2), Cartesian1D(0.8), PeriodicBoxSides1D(1.0), 0.4),
+        (Cartesian2D(0.2, 0.1), Cartesian2D(0.9, 0.9), PeriodicBoxSides2D(1.0, 1.0), (0.2**2 + 0.3**2)**0.5),
+    ]
+)
+def test_periodic_euclidean_distance(point0, point1, box, expect_distance):
     expect_distance_sq = expect_distance**2
 
     actual_distance = measure.periodic_euclidean_distance(point0, point1, box)
@@ -186,7 +188,8 @@ def test_periodic_euclidean_norm(point, expect_norm):
 
 
 def test_periodic_euclidean_norm_wrong_boxdimension():
-    box = PeriodicBoxSides3D(1.0, 1.0)
+    box = PeriodicBoxSides3D(1.0, 1.0, 1.0)
+
     point = Cartesian1D(0.2)
 
     with pytest.raises(RuntimeError):
