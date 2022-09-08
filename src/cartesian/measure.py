@@ -130,3 +130,29 @@ def periodic_euclidean_norm_squared(
 def periodic_euclidean_norm(point: CartesianND, box: PeriodicBoxSidesND) -> float:
     """The Euclidean norm of a point subject to periodic boundary conditions imposed by `box`."""
     return math.sqrt(periodic_euclidean_norm_squared(point, box))
+
+
+def approx_eq(
+    point0: CartesianND, point1: CartesianND, tolerance: float = 1.0e-6
+) -> bool:
+    """Check if two points are approximately equal to each other, within a given tolerance."""
+    dist_sq = euclidean_distance_squared(point0, point1)
+    tol_sq = tolerance**2
+
+    return dist_sq < tol_sq
+
+
+def periodic_approx_eq(
+    point0: CartesianND,
+    point1: CartesianND,
+    box: PeriodicBoxSidesND,
+    tolerance: float = 1.0e-6,
+) -> bool:
+    """
+    Check if two points are approximately equal to each other, within a given tolerance,
+    when subject to the periodic boundary conditions imposed by `box`.
+    """
+    dist_sq = periodic_euclidean_distance_squared(point0, point1, box)
+    tol_sq = tolerance**2
+
+    return dist_sq < tol_sq
