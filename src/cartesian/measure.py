@@ -14,7 +14,7 @@ from .periodic_box_sides import PeriodicBoxSidesND
 
 def euclidean_distance_squared(point0: CartesianND, point1: CartesianND) -> float:
     """The square of the Euclidean distance between two points in N-dimensional free space."""
-    if type(point0) is not type(point1):
+    if len(point0._coords) != len(point1._coords):
         return NotImplemented
 
     distance_sq = sum(
@@ -75,7 +75,7 @@ def periodic_euclidean_distance_squared(
     The square of the Euclidean distance between two points subject to periodic
     boundary conditions imposed by `box`.
     """
-    if type(point0) is not type(point1):
+    if len(point0._coords) != len(point1._coords):
         return NotImplemented
 
     if len(point0._coords) != len(box._coords):
