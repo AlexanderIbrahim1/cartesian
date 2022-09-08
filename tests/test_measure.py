@@ -197,3 +197,34 @@ def test_periodic_euclidean_norm_wrong_boxdimension():
 
     with pytest.raises(RuntimeError):
         measure.periodic_euclidean_norm_squared(point, box)
+
+
+def test_approx_eq():
+    x = 1.0
+    y = 2.0
+    dx = 1.0e-8
+    dy = 2.0e-8
+    point0 = Cartesian2D(x, y)
+    point1 = Cartesian2D(x + dx, y + dy)
+
+    assert measure.approx_eq(point0, point1)
+
+
+def test_approx_neq():
+    x = 1.0
+    y = 2.0
+    dx = 1.0e-5    # dx and dy are too large
+    dy = 2.0e-5
+    point0 = Cartesian2D(x, y)
+    point1 = Cartesian2D(x + dx, y + dy)
+
+    assert not measure.approx_eq(point0, point1)
+
+
+def test_periodic_approx_eq():
+    point0 = Cartesian2D(1.0, 2.0)
+    point1 = Cartesian2D(4.0 + 1.0e-8, 5.0 + 1.0e-7)
+
+    box = PeriodicBoxSides2D(3.0, 3.0)
+
+    assert measure.periodic_approx_eq(point0, point1, box)
