@@ -31,6 +31,9 @@ class CartesianND(ABC):
         if not isinstance(other, CartesianND):
             return NotImplemented
         return self._coords == other.coordinates
+    
+    def __hash__(self):
+        return hash(tuple(self._coords))
 
     def __getitem__(self, i_dim: int) -> float:
         """Return the value of the `dim`th dimension of this point."""
