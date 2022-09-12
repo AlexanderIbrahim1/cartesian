@@ -20,7 +20,7 @@ def euclidean_distance_squared(point0: CartesianND, point1: CartesianND) -> floa
     distance_sq = sum(
         [
             (coord0 - coord1) ** 2
-            for (coord0, coord1) in zip(point0.coordinates(), point1.coordinates())
+            for (coord0, coord1) in zip(point0.coordinates, point1.coordinates)
         ]
     )
 
@@ -38,7 +38,7 @@ def euclidean_distance(point0: CartesianND, point1: CartesianND) -> float:
 
 def euclidean_norm_squared(point: CartesianND) -> float:
     """The square of the Euclidean norm of a point, from the origin, in free space."""
-    return sum([coord**2 for coord in point.coordinates()])
+    return sum([coord**2 for coord in point.coordinates])
 
 
 def euclidean_norm(point: CartesianND) -> float:
@@ -84,7 +84,7 @@ def periodic_euclidean_distance_squared(
 
     distance_sq = 0.0
     for (coord0, coord1, sidelength) in zip(
-        point0.coordinates(), point1.coordinates(), box.coordinates()
+        point0.coordinates, point1.coordinates, box.coordinates
     ):
         true_pair_separation = _periodic_modulus_pairdist(coord1 - coord0, sidelength)
 
@@ -119,7 +119,7 @@ def periodic_euclidean_norm_squared(
         raise RuntimeError(err_msg)
 
     distance_sq = 0.0
-    for (coord, sidelength) in zip(point.coordinates(), box.coordinates()):
+    for (coord, sidelength) in zip(point.coordinates, box.coordinates):
         true_pair_separation = _periodic_modulus_pairdist(coord, sidelength)
 
         distance_sq += true_pair_separation**2

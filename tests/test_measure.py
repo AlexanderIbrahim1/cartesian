@@ -112,8 +112,13 @@ def test__periodic_modulus_pairdist_sidelength1(pair_sep, actual_true_pair_sep):
     "point0, point1, box, expect_distance",
     [
         (Cartesian1D(0.2), Cartesian1D(0.8), PeriodicBoxSides1D(1.0), 0.4),
-        (Cartesian2D(0.2, 0.1), Cartesian2D(0.9, 0.9), PeriodicBoxSides2D(1.0, 1.0), (0.2**2 + 0.3**2)**0.5),
-    ]
+        (
+            Cartesian2D(0.2, 0.1),
+            Cartesian2D(0.9, 0.9),
+            PeriodicBoxSides2D(1.0, 1.0),
+            (0.2**2 + 0.3**2) ** 0.5,
+        ),
+    ],
 )
 def test_periodic_euclidean_distance(point0, point1, box, expect_distance):
     expect_distance_sq = expect_distance**2
@@ -213,7 +218,7 @@ def test_approx_eq():
 def test_approx_neq():
     x = 1.0
     y = 2.0
-    dx = 1.0e-5    # dx and dy are too large
+    dx = 1.0e-5  # dx and dy are too large
     dy = 2.0e-5
     point0 = Cartesian2D(x, y)
     point1 = Cartesian2D(x + dx, y + dy)
