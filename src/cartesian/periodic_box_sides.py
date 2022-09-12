@@ -23,11 +23,15 @@ class PeriodicBoxSidesND(ABC):
     def coordinates(self) -> array[float]:
         """Direct access to coordinates, mainly for iteration."""
         return self._coords
+    
+    @property
+    def n_dims(self) -> int:
+        return len(self._coords)
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, PeriodicBoxSidesND):
             return NotImplemented
-        return self._coords == other._coords
+        return self._coords == other.coordinates()
 
     def __getitem__(self, i_dim: int) -> float:
         """Return the value of the `dim`th dimension of this box."""
