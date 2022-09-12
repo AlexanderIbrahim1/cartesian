@@ -61,7 +61,7 @@ def test_periodic_box_repr():
 
 def test_periodic_box_coordinates():
     box = PeriodicBoxSides2D(1.5, 3.3)
-    coord_itr = iter(box.coordinates())
+    coord_itr = iter(box.coordinates)
     # fmt: off
     assert (
         next(coord_itr) == pytest.approx(1.5)
