@@ -22,10 +22,14 @@ class CartesianND(ABC):
         """Direct access to coordinates, mainly for iteration."""
         return self._coords
 
+    @property
+    def n_dims(self) -> int:
+        return len(self._coords)
+
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, CartesianND):
             return NotImplemented
-        return self._coords == other._coords
+        return self._coords == other.coordinates()
 
     def __getitem__(self, i_dim: int) -> float:
         """Return the value of the `dim`th dimension of this point."""
@@ -35,7 +39,7 @@ class CartesianND(ABC):
         """Printed representation of the point as a comma-separated tuple."""
         _repr_inner = ", ".join([f"{coord:.6f}" for coord in self._coords])
         return "(" + _repr_inner + ")"
-
+    
     def __add__(self, other: CartesianND) -> CartesianND:
         """Element-wise addition of two points in cartesian space."""
         if type(self) is not type(other):
@@ -43,7 +47,7 @@ class CartesianND(ABC):
 
         new_coords = [
             co_self + co_other
-            for (co_self, co_other) in zip(self._coords, other._coords)
+            for (co_self, co_other) in zip(self._coords, other.coordinates())
         ]
 
         return CartesianND(array("d", new_coords))
@@ -55,7 +59,7 @@ class CartesianND(ABC):
 
         new_coords = [
             co_self - co_other
-            for (co_self, co_other) in zip(self._coords, other._coords)
+            for (co_self, co_other) in zip(self._coords, other.coordinates())
         ]
 
         return CartesianND(array("d", new_coords))
