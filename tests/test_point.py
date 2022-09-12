@@ -1,3 +1,4 @@
+import collections
 import random
 
 import pytest
@@ -121,3 +122,8 @@ def test_multiplication_1D2D3D():
         assert p0_3d_right[1] == pytest.approx(scale * y0)
         assert p0_3d_left[2] == pytest.approx(scale * z0)
         assert p0_3d_right[2] == pytest.approx(scale * z0)
+
+
+def test_hash():
+    p = Cartesian2D(1.0, 2.0)
+    assert hash(p) == hash((1.0, 2.0))
