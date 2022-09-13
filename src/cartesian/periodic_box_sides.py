@@ -9,7 +9,6 @@ class PeriodicBoxSidesND(ABC):
 
     _coords: array[float]
 
-    @abstractmethod
     def __init__(self, coords: array[float]) -> None:
         self._coords = coords
 
