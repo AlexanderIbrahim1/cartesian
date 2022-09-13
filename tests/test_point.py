@@ -6,6 +6,7 @@ import pytest
 from cartesian import Cartesian1D
 from cartesian import Cartesian2D
 from cartesian import Cartesian3D
+from cartesian import CartesianND
 
 
 def test_origins():
@@ -127,3 +128,7 @@ def test_multiplication_1D2D3D():
 def test_hash():
     p = Cartesian2D(1.0, 2.0)
     assert hash(p) == hash((1.0, 2.0))
+
+def test_origin():
+    p = CartesianND.origin(3)
+    assert list(p.coordinates) == [0.0, 0.0, 0.0]
