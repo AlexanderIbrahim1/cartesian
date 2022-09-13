@@ -31,7 +31,7 @@ class CartesianND(ABC):
         if not isinstance(other, CartesianND):
             return NotImplemented
         return self._coords == other.coordinates
-    
+
     def __hash__(self):
         return hash(tuple(self._coords))
 
@@ -91,6 +91,12 @@ class CartesianND(ABC):
         else:
             new_coords = [coord / other for coord in self._coords]
             return CartesianND(array("d", new_coords))
+
+    @classmethod
+    def origin(self, size: int) -> CartesianND:
+        if size <= 0:
+            raise ValueError("CartesianND point must have a `size` of 1 or greater.")
+        return CartesianND(array("d", [0.0] * size))
 
 
 class Cartesian1D(CartesianND):
