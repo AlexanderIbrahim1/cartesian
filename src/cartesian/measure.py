@@ -11,7 +11,6 @@ import math
 from .point import CartesianND
 from .periodic_box_sides import PeriodicBoxSidesND
 
-
 def euclidean_distance_squared(point0: CartesianND, point1: CartesianND) -> float:
     """The square of the Euclidean distance between two points in N-dimensional free space."""
     if point0.n_dims != point1.n_dims:
@@ -156,3 +155,14 @@ def periodic_approx_eq(
     tol_sq = tolerance**2
 
     return dist_sq < tol_sq
+
+
+# aliases for any function with the word 'euclidean' in it
+distance_squared = euclidean_distance_squared
+distance = euclidean_distance
+norm_squared = euclidean_norm_squared
+norm = euclidean_norm
+periodic_distance_squared = periodic_euclidean_distance_squared
+periodic_distance = periodic_euclidean_distance
+periodic_norm_squared = periodic_euclidean_norm_squared
+periodic_norm = periodic_euclidean_norm
