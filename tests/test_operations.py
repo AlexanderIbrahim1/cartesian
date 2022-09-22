@@ -1,6 +1,8 @@
 import pytest
 
+from cartesian import Cartesian2D
 from cartesian import Cartesian3D
+from cartesian import measure
 from cartesian import operations
 
 
@@ -39,3 +41,28 @@ class TestLinearCombination:
         
         with pytest.raises(AssertionError):
             operations.linear_combination(points, coeffs)
+
+
+class TestCentroid:
+    def test_centroid(self):
+        points = [
+            Cartesian2D(-1.0, -1.0),
+            Cartesian2D(-1.0, 1.0),
+            Cartesian2D(1.0, -1.0),
+            Cartesian2D(1.0, 1.0),
+        ]
+        
+        centroid_point = operations.centroid(points)
+        assert measure.approx_eq(centroid_point, Cartesian2D.origin())
+    
+    def test_centroid_brute_force(self):
+        points = [
+            Cartesian3D(1.0, 2.0, 3.0),
+            Cartesian3D(4.0, 5.0, 6.0),
+            Cartesian3D(7.0, 8.0, 9.0),
+        ]
+        
+        expect_point = (points[0] + points[1] + points[2]) / len(points)
+        
+        centroid_point = operations.centroid(points)
+        assert measure.approx_eq(centroid_point, expect_point)
