@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from abc import abstractmethod, ABC
+from abc import ABC
 from array import array
 
 

@@ -4,10 +4,23 @@ such as:
     - taking linear combinations of several points
     - ...
 """
-from array import array
 from typing import Sequence
 
 from cartesian import CartesianND
+
+
+def dot_product(p0: CartesianND, p1: CartesianND) -> float:
+    """The N-dimensional Cartesian inner product between these two points."""
+    if p0.n_dims != p1.n_dims:
+        raise ValueError(
+            "Two points must have the same dimensionality to calculate their dot product.\n"
+            f"p0.n_dims = {p0.n_dims}\n"
+            f"p1.n_dims = {p1.n_dims}"
+        )
+
+    return sum(
+        [elem0 * elem1 for (elem0, elem1) in zip(p0.coordinates, p1.coordinates)]
+    )
 
 
 def linear_combination(
@@ -29,9 +42,9 @@ def centroid(points: Sequence[CartesianND]) -> CartesianND:
     """
     n_points = len(points)
     assert n_points >= 1
-    
+
     sum_point = points[0]
     for point in points[1:]:
         sum_point += point
-    
+
     return sum_point / n_points

@@ -66,3 +66,25 @@ class TestCentroid:
         
         centroid_point = operations.centroid(points)
         assert measure.approx_eq(centroid_point, expect_point)
+
+
+class Test_dot_product:
+    def test_basic_functionality(self):
+        p0 = Cartesian2D(1.0, 1.0)
+        p1 = Cartesian2D(2.0, 0.0)
+        
+        assert operations.dot_product(p0, p1) == pytest.approx(2.0)
+
+    def test_raises_different_sizes(self):
+        p_dim2 = Cartesian2D(1.0, 2.0)
+        p_dim3 = Cartesian3D(3.0, 4.0, 5.0)
+        
+        with pytest.raises(ValueError) as exc_info:
+            operations.dot_product(p_dim2, p_dim3)
+        
+        assert (
+            "Two points must have the same dimensionality to calculate their dot product.\n"
+            f"p0.n_dims = 2\n"
+            f"p1.n_dims = 3"
+            in str(exc_info.value)
+        )

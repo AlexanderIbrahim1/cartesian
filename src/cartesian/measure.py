@@ -11,6 +11,7 @@ import math
 from .point import CartesianND
 from .periodic_box_sides import PeriodicBoxSidesND
 
+
 def euclidean_distance_squared(point0: CartesianND, point1: CartesianND) -> float:
     """The square of the Euclidean distance between two points in N-dimensional free space."""
     if point0.n_dims != point1.n_dims:
