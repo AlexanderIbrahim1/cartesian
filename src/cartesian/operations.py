@@ -6,9 +6,13 @@ such as:
 """
 import array
 import math
+from itertools import combinations
+from typing import Callable
 from typing import Sequence
 
 from cartesian import CartesianND
+from cartesian.measure import euclidean_distance
+from cartesian.measure import periodic_euclidean_distance
 from cartesian.periodic_box_sides import PeriodicBoxSidesND
 
 
@@ -51,6 +55,28 @@ def centroid(points: Sequence[CartesianND]) -> CartesianND:
         sum_point += point
 
     return sum_point / n_points
+
+
+def relative_pair_distances(points: Sequence[CartesianND]) -> list[float]:
+    """
+    Calculate the distances between all pairs of points in free, non-periodic space.
+
+    If fewer than two points are present, the returned list is empty.
+    """
+    return [euclidean_distance(p0, p1) for (p0, p1) in combinations(points, 2)]
+
+
+def periodic_relative_pair_distances(
+    points: Sequence[CartesianND], box: PeriodicBoxSidesND
+) -> list[float]:
+    """
+    Calculate the distances between all pairs of points in periodic space.
+
+    If fewer than two points are present, the returned list is empty.
+    """
+    return [
+        periodic_euclidean_distance(p0, p1, box) for (p0, p1) in combinations(points, 2)
+    ]
 
 
 # TODO: come up with a better description
