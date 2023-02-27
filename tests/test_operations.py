@@ -133,3 +133,26 @@ class Test_shift_points_together:
             "The point is too far from the origin relative to the size of the box.\n"
             "More than a single shift had to be performed.\n" in str(exc_info.value)
         )
+
+
+class Test_relative_pair_distances:
+    def test_basic_functionality(self):
+        points = [
+            Cartesian2D(0.0, 0.0),
+            Cartesian2D(0.0, 1.0),
+            Cartesian2D(0.0, 2.0),
+        ]
+
+        pair_distances = operations.relative_pair_distances(points)
+        assert pair_distances[0] == pytest.approx(1.0)
+        assert pair_distances[1] == pytest.approx(2.0)
+        assert pair_distances[2] == pytest.approx(1.0)
+
+    def test_one_point(self):
+        points = [Cartesian2D(0.0, 0.0)]
+
+        pair_distances = operations.relative_pair_distances(points)
+        assert pair_distances == []
+
+    def test_no_points(self):
+        assert operations.relative_pair_distances([]) == []
