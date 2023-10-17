@@ -4,12 +4,14 @@ such as:
     - taking linear combinations of several points
     - ...
 """
+
 import array
 import math
 from itertools import combinations
-from typing import Callable
 from typing import Sequence
 
+from cartesian import Cartesian2D
+from cartesian import Cartesian3D
 from cartesian import CartesianND
 from cartesian.measure import euclidean_distance
 from cartesian.measure import periodic_euclidean_distance
@@ -28,6 +30,38 @@ def dot_product(p0: CartesianND, p1: CartesianND) -> float:
     return sum(
         [elem0 * elem1 for (elem0, elem1) in zip(p0.coordinates, p1.coordinates)]
     )
+
+
+def cross_product(pa: Cartesian3D, pb: Cartesian3D) -> float:
+    if pa.n_dims != 3 or pb.n_dims != 3:
+        raise ValueError(
+            "The cross product is only defined between two 3-dimensional vectors.\n"
+            f"pa.n_dims = {pa.n_dims}\n"
+            f"pb.n_dims = {pb.n_dims}"
+        )
+
+    coords_a = pa.coordinates
+    coords_b = pb.coordinates
+
+    result0 = coords_a[1] * coords_b[2] - coords_a[2] * coords_b[1]
+    result1 = coords_a[2] * coords_b[0] - coords_a[0] * coords_b[2]
+    result2 = coords_a[0] * coords_b[1] - coords_a[1] * coords_b[0]
+
+    return Cartesian3D(result0, result1, result2)
+
+
+def cross_product_result(pa: Cartesian2D, pb: Cartesian2D) -> float:
+    if pa.n_dims != 2 or pb.n_dims != 2:
+        raise ValueError(
+            "The cross product result is only defined between two 2-dimensional vectors.\n"
+            f"pa.n_dims = {pa.n_dims}\n"
+            f"pb.n_dims = {pb.n_dims}"
+        )
+
+    coords_a = pa.coordinates
+    coords_b = pb.coordinates
+
+    return coords_a[0] * coords_b[1] - coords_a[1] * coords_b[0]
 
 
 def linear_combination(
