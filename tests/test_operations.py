@@ -156,3 +156,41 @@ class Test_relative_pair_distances:
 
     def test_no_points(self):
         assert operations.relative_pair_distances([]) == []
+
+
+class Test_cross_product:
+    @pytest.mark.parametrize(
+        "coords0, coords1, coords_expected",
+        [
+            ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)),
+            ((1.0, 3.0, 4.0), (2.0, 7.0, -5.0), (-43.0, 13.0, 1.0)),  # found online
+        ],
+    )
+    def test_basic_functionality(self, coords0, coords1, coords_expected):
+        point0 = Cartesian3D(*coords0)
+        point1 = Cartesian3D(*coords1)
+
+        expected = Cartesian3D(*coords_expected)
+        actual = operations.cross_product(point0, point1)
+
+        assert measure.approx_eq(expected, actual)
+
+    def test_negative(self):
+        p0 = Cartesian3D(1.0, 2.0, 3.0)
+        p1 = Cartesian3D(4.0, 5.0, 6.0)
+
+        result01 = operations.cross_product(p0, p1)
+        result10 = operations.cross_product(p1, p0)
+
+        assert measure.approx_eq(result01, -1.0 * result10)
+
+
+class Test_cross_product_result:
+    def test_basic_functionality(self):
+        p0 = Cartesian2D(1.0, 0.0)
+        p1 = Cartesian2D(0.0, 1.0)
+
+        expected = 1.0
+        actual = operations.cross_product_result(p0, p1)
+
+        assert expected == pytest.approx(actual)
