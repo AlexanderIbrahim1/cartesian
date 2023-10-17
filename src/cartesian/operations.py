@@ -32,7 +32,7 @@ def dot_product(p0: CartesianND, p1: CartesianND) -> float:
     )
 
 
-def cross_product(pa: Cartesian3D, pb: Cartesian3D) -> float:
+def cross_product(pa: Cartesian3D, pb: Cartesian3D) -> Cartesian3D:
     if pa.n_dims != 3 or pb.n_dims != 3:
         raise ValueError(
             "The cross product is only defined between two 3-dimensional vectors.\n"
